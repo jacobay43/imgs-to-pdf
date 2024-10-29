@@ -29,6 +29,7 @@ def make_dark_palette():
     darkPalette.setColor(qtg.QPalette.Disabled, qtg.QPalette.HighlightedText, qtg.QColor(127, 127, 127))
     return darkPalette
 
+
 class PDFView(qtw.QTextEdit):
     dpi = 72
     doc_width = 8.27 * dpi 
@@ -110,6 +111,7 @@ class PDFView(qtw.QTextEdit):
                 cursor.insertImage(image_format_fmt)
             except (IndexError, TypeError):
                 break
+
 
 class MainWindow(qtw.QMainWindow):
     def __init__(self):
