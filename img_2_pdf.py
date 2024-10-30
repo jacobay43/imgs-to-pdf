@@ -47,7 +47,7 @@ class PDFView(qtw.QTextEdit):
 
     def scale_down_image(self, img_path: str):
         image = qtg.QImage(img_path)
-        scaled_image = image.scaled(300,400,qtc.Qt.KeepAspectRatio, qtc.Qt.SmoothTransformation) 
+        scaled_image = image.scaled(image.width() // 10,image.height() // 10,qtc.Qt.KeepAspectRatio, qtc.Qt.SmoothTransformation) 
         buffer = qtc.QBuffer()
         buffer.open(qtc.QBuffer.ReadWrite)
         scaled_image.save(buffer, "PNG")
@@ -142,6 +142,7 @@ class MainWindow(qtw.QMainWindow):
         layout = qtw.QVBoxLayout()
         self.images = []
         self.status_label = qtw.QLabel(f'{len(self.images)} images found. Begin conversion? ')
+        self.status_label.setAlignment(qtc.Qt.AlignCenter)
         self.begin_btn = qtw.QPushButton(text='Begin',clicked=self.convert_to_pdf)
         layout.addWidget(self.open_folder_btn)
         layout.addWidget(self.status_label)
@@ -206,9 +207,11 @@ class MainWindow(qtw.QMainWindow):
             self._print_document()
 
     def convert_to_pdf(self):
+        self.status_label.setText('Creating PDF from Images')
         self.setEnabled(False)
         self.pdf_view.build_pdf(self.images)
         self.export_pdf()
+        self.status_label.setText('PDF Generated Successfully')
         self.setEnabled(True)
 
 if __name__ == '__main__':
