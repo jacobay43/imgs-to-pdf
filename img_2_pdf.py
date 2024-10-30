@@ -45,6 +45,16 @@ class PDFView(qtw.QTextEdit):
         self.setFixedSize(qtc.QSize(self.doc_width,self.doc_height))
         self.document().setPageSize(qtc.QSizeF(self.doc_width,self.doc_height))
 
+    def scale_down_image(self, img_path: str):
+        image = qtg.QImage(img_path)
+        scaled_image = image.scaled(300,400,qtc.Qt.KeepAspectRatio, qtc.Qt.SmoothTransformation) 
+        buffer = qtc.QBuffer()
+        buffer.open(qtc.QBuffer.ReadWrite)
+        scaled_image.save(buffer, "PNG")
+        data = buffer.data()
+
+        return data
+
     def build_pdf(self, images: list):
         document = qtg.QTextDocument()
         self.setDocument(document)
@@ -78,8 +88,9 @@ class PDFView(qtw.QTextEdit):
             if (row >= table.rows()):
                 break
 
-            try:
-                image_format_fmt.setName(images[row])        
+            try:                
+                data = self.scale_down_image(images[row])
+                image_format_fmt.setName("data:image/png;base64," + data.toBase64().data().decode())        
                 cursor = table.cellAt(row,0).firstCursorPosition()
                 cursor.setBlockFormat(block_fmt)
                 cursor.insertImage(image_format_fmt)
@@ -87,7 +98,8 @@ class PDFView(qtw.QTextEdit):
                 break
 
             try:
-                image_format_fmt.setName(images[row+1])
+                data = self.scale_down_image(images[row+1])
+                image_format_fmt.setName("data:image/png;base64," + data.toBase64().data().decode())   
                 cursor = table.cellAt(row,1).firstCursorPosition()
                 cursor.setBlockFormat(block_fmt)
                 cursor.insertImage(image_format_fmt)
@@ -97,7 +109,8 @@ class PDFView(qtw.QTextEdit):
             if ((row+1) >= table.rows()):
                 break
             try:
-                image_format_fmt.setName(images[row+2])
+                data = self.scale_down_image(images[row+2])
+                image_format_fmt.setName("data:image/png;base64," + data.toBase64().data().decode())   
                 cursor = table.cellAt(row+1,0).firstCursorPosition()
                 cursor.setBlockFormat(block_fmt)
                 cursor.insertImage(image_format_fmt)
@@ -105,7 +118,8 @@ class PDFView(qtw.QTextEdit):
                 break
             
             try:
-                image_format_fmt.setName(images[row+3])
+                data = self.scale_down_image(images[row+3])
+                image_format_fmt.setName("data:image/png;base64," + data.toBase64().data().decode())   
                 cursor = table.cellAt(row+1,1).firstCursorPosition()
                 cursor.setBlockFormat(block_fmt)
                 cursor.insertImage(image_format_fmt)
