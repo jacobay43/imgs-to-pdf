@@ -195,7 +195,7 @@ class MainWindow(qtw.QMainWindow):
         folder = qtw.QFileDialog.getExistingDirectory(
             self, "Images Folder", qtc.QDir.homePath(), qtw.QFileDialog.ShowDirsOnly)        
         if folder:
-            self.images = list(set([os.path.join(folder,p) for p in os.listdir(folder) if (p.lower().endswith('.png') or p.lower().endswith('.jpeg') or p.lower().endswith('.jpg'))]))
+            self.images = [os.path.join(folder,p) for p in os.listdir(folder) if (p.lower().endswith('.png') or p.lower().endswith('.jpeg') or p.lower().endswith('.jpg'))]
             self.status_label.setText(f'{len(self.images)} images found. Begin conversion? ')
 
     def export_pdf(self):
