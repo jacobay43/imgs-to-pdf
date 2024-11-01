@@ -47,7 +47,7 @@ class PDFView(qtw.QTextEdit):
 
     def scale_down_image(self, img_path: str):
         image = qtg.QImage(img_path)
-        scaled_image = image.scaled(image.width() // 10,image.height() // 10,qtc.Qt.KeepAspectRatio, qtc.Qt.SmoothTransformation) 
+        scaled_image = image.scaled(image.width() // 8,image.height() // 8,qtc.Qt.KeepAspectRatio, qtc.Qt.SmoothTransformation) 
         buffer = qtc.QBuffer()
         buffer.open(qtc.QBuffer.ReadWrite)
         scaled_image.save(buffer, "PNG")
